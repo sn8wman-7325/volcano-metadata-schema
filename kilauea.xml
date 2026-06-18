@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<volcanoRecord
+    xmlns="http://example.org/volcano"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://example.org/volcano
+        volcano_metadata.xsd">
+
+    <dc:title>Kīlauea</dc:title>
+
+    <dc:description>
+        An active volcano in Hawaii known for its long-lasting eruptions,
+        extensive lava flows, and significant impacts on nearby communities,
+        infrastructure, and the natural environment.
+    </dc:description>
+
+    <location>Hawaii, United States</location>
+
+    <startDate>2018-05-03</startDate>
+
+    <endDate>2018-08-04</endDate>
+
+    <volcanoType>Shield volcano</volcanoType>
+
+    <notableEvent>2018 Lower Puna eruption</notableEvent>
+
+    <eventImpactType>Evacuation/displacement</eventImpactType>
+    <eventImpactType>Economic damage</eventImpactType>
+    <eventImpactType>Environmental impact</eventImpactType>
+
+    <humanImpact>
+        Thousands of residents were evacuated and hundreds of homes
+        were destroyed by lava flows.
+    </humanImpact>
+
+    <populationExposure>High</populationExposure>
+
+    <climateEffect>Local atmospheric effect</climateEffect>
+
+    <responseStrategy>Hazard monitoring</responseStrategy>
+    <responseStrategy>Evacuation order</responseStrategy>
+    <responseStrategy>Public warning</responseStrategy>
+
+    <monitoringAgency>Hawaiian Volcano Observatory (HVO)</monitoringAgency>
+
+</volcanoRecord>

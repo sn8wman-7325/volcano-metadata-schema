@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Design intent:
+This schema describes volcanoes and major volcanic events, 
+with an emphasis on documenting their environmental and societal impacts.
+The initial metadata design incorporated concepts from both Dublin Core and Schema.org.
+However, because implementing Schema.org concepts directly in an XML Schema (XSD) environment would add unnecessary complexity, 
+those concepts were replaced with locally defined elements for this project.
+The location, monitoringAgency, startDate, and endDate elements were inspired by Schema.org concepts but implemented as locally defined elements.
+
+AI use:
+AI was used as a reference for XML Schema syntax and implementation approaches.
+It suggested several methods for importing external schemas and implementing Schema.org concepts.
+After review and testing, 
+Schema.org-based elements were replaced with locally defined elements to support a simpler XSD structure and more reliable validation.
+
+Prompt:
+"Provide examples of XSD element declarations, controlled vocabularies, and Dublin Core imports."
+
+Modifications:
+All element definitions, cardinality rules, controlled vocabularies, namespace configurations, 
+and documentation annotations were reviewed and revised to align with the project data dictionary and assignment requirements.
+-->
+
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:volcano="http://example.org/volcano"
+    targetNamespace="http://example.org/volcano"
+    xmlns="http://example.org/volcano"
+    elementFormDefault="qualified">
+
+    <!--
+    Design intent:
+    The dc:title and dc:description elements were adopted from an established external metadata standard,
+    so the Dublin Core namespace was imported.
+    The schemaLocation points to the DCMI XSD, which provides global declarations for the fifteen Simple Dublin Core elements.
+    
+    AI use:
+    AI initially suggested using a local helper XSD for offline testing.
+    This approach was later revised to use the external Dublin Core XSD in order to align with the assignment requirements.
+    -->
+    <xs:import namespace="http://purl.org/dc/elements/1.1/" schemaLocation="https://www.dublincore.org/schemas/xmls/qdc/dc.xsd"/>
+
+    <!--
+    Design intent:
+    The data dictionary permits exact dates as well as approximate dates, date ranges, and unknown date information. 
+    Therefore, date values are represented as strings rather than being restricted to a standard date datatype.
+
+    AI use:
+    AI suggested an XSD implementation approach that supports approximate date expressions.
+    After review, dateOrTextType was implemented to accommodate the date requirements specified in the data dictionary.
+    -->
+    <xs:simpleType name="dateOrTextType">
+        <xs:annotation>
+            <xs:documentation>A date, approximate date, time period, or textual note when the event date or period is uncertain.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--
+    Design intent:
+    Volcano types are restricted to the controlled vocabulary defined in the data dictionary to ensure consistent geological classification across records.
+    -->
+    <xs:simpleType name="volcanoTypeType">
+        <xs:annotation>
+            <xs:documentation>The geological classification of the volcano based on its structure, formation, and eruption characteristics.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Stratovolcano"/>
+            <xs:enumeration value="Shield volcano"/>
+            <xs:enumeration value="Caldera"/>
+            <xs:enumeration value="Lava dome"/>
+            <xs:enumeration value="Cinder cone"/>
+            <xs:enumeration value="Volcanic island"/>
+            <xs:enumeration value="Complex volcano"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--
+    Design intent:
+    This schema was designed to support comparison of impact categories across volcanic events.
+    Therefore, impact types are restricted to a controlled vocabulary.
+
+    AI use:
+    AI assisted with implementing the controlled vocabulary using xs:enumeration values.
+    The vocabulary terms themselves were defined in Draft 3 and were reviewed before being incorporated into the schema.
+    -->
+    <xs:simpleType name="eventImpactTypeType">
+        <xs:annotation>
+            <xs:documentation>The major category or categories of impact caused by the volcanic event.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Human casualty"/>
+            <xs:enumeration value="Evacuation/displacement"/>
+            <xs:enumeration value="Climate impact"/>
+            <xs:enumeration value="Transportation disruption"/>
+            <xs:enumeration value="Economic damage"/>
+            <xs:enumeration value="Environmental impact"/>
+            <xs:enumeration value="Cultural heritage impact"/>
+            <xs:enumeration value="Urban destruction"/>
+            <xs:enumeration value="Tsunami impact"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--
+    Design intent:
+    Population exposure levels are restricted to a controlled vocabulary to reduce inconsistencies and support comparison across records.
+
+    AI use:
+    AI assisted with implementing the controlled vocabulary as xs:enumeration values.
+    The vocabulary terms were defined in the data dictionary and reviewed before inclusion in the schema.
+    -->
+    <xs:simpleType name="populationExposureType">
+        <xs:annotation>
+            <xs:documentation>The level of nearby population vulnerability or exposure to volcanic risk.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Low"/>
+            <xs:enumeration value="Moderate"/>
+            <xs:enumeration value="High"/>
+            <xs:enumeration value="Very High"/>
+            <xs:enumeration value="Unknown"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--
+    Design intent:
+    Climate effects are restricted to a controlled vocabulary in order to enable consistent comparison of the scale and nature of impacts across major volcanic events.
+    -->
+    <xs:simpleType name="climateEffectType">
+        <xs:annotation>
+            <xs:documentation>The effect of a volcanic event on regional or global climate systems, including atmospheric cooling, aerosol release, or ash-related atmospheric change.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Not documented"/>
+            <xs:enumeration value="Local atmospheric effect"/>
+            <xs:enumeration value="Regional climate effect"/>
+            <xs:enumeration value="Global cooling"/>
+            <xs:enumeration value="Long-term climate influence"/>
+            <xs:enumeration value="Unknown"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--
+    Design intent:
+    Transportation disruption categories are restricted to a controlled vocabulary based on the affected mode of transportation, as volcanic ash eruptions may impact multiple transportation systems.
+
+    AI use:
+    AI assisted with implementing the controlled vocabulary as an xs:simpleType with enumeration values.
+    -->
+    <xs:simpleType name="transportationDisruptionType">
+        <xs:annotation>
+            <xs:documentation>Disruption to transportation systems caused by volcanic activity, including aviation, roads, railways, maritime routes, or access routes.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Not documented"/>
+            <xs:enumeration value="Aviation disruption"/>
+            <xs:enumeration value="Road closure"/>
+            <xs:enumeration value="Railway disruption"/>
+            <xs:enumeration value="Maritime disruption"/>
+            <xs:enumeration value="Multi-system disruption"/>
+            <xs:enumeration value="Access restriction"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--
+    Design intent:
+    Response strategies are restricted to a controlled vocabulary in order to support comparison of emergency response, monitoring, and recovery measures across volcanic events.
+
+    AI use:
+    AI assisted with implementing the controlled vocabulary defined in Draft 3 using xs:enumeration values.
+    The vocabulary terms were reviewed against the data dictionary before being incorporated into the schema.
+    -->
+    <xs:simpleType name="responseStrategyType">
+        <xs:annotation>
+            <xs:documentation>Emergency, monitoring, evacuation, mitigation, or recovery actions taken before, during, or after a volcanic event.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Hazard monitoring"/>
+            <xs:enumeration value="Evacuation order"/>
+            <xs:enumeration value="Exclusion zone"/>
+            <xs:enumeration value="Emergency shelter"/>
+            <xs:enumeration value="Airspace regulation"/>
+            <xs:enumeration value="Road closure"/>
+            <xs:enumeration value="Long-term recovery"/>
+            <xs:enumeration value="Public warning"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--
+    Design intent:
+    The volcanoRecord element represents a complete metadata record describing a single volcano or volcanic event.
+    The included elements, as well as their required and repeatable status, follow the rules defined in the Draft 3 data dictionary.
+
+    The initial design incorporated concepts from both Dublin Core and Schema.org.
+    However, because implementing Schema.org concepts directly in XSD would add unnecessary complexity, the location, monitoringAgency, startDate, and endDate elements were implemented as locally defined elements within the volcano namespace.
+
+    In addition, the data dictionary described the possibility of representing some information through more detailed sub-elements.
+    However, in the Draft 4 XSD, this information was represented using single elements rather than separate sub-elements in order to simplify implementation and support reliable validation.
+
+    AI use:
+    AI generated an initial draft of the XSD structure for volcanoRecord.
+    The generated code was subsequently reviewed and modified by retaining Dublin Core elements as external references and implementing location, monitoringAgency, startDate, and endDate as locally defined elements within the volcano namespace.
+    -->
+    <xs:element name="volcanoRecord">
+        <xs:annotation>
+            <xs:documentation>A metadata record describing one volcano and a notable volcanic event associated with it.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+
+                <!--
+            Design intent:
+            Each record must contain a single identifiable volcano or event name. Therefore, dc:title is required and may occur only once.
+
+            AI use:
+            AI assisted with XSD syntax implementation, and the element definition was reviewed and verified against the data dictionary.
+            -->
+                <xs:element ref="dc:title">
+                    <xs:annotation>
+                        <xs:documentation>The official or commonly used name of the volcano or volcanic event being described.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                dc:description is required and may occur only once in order to provide a concise summary focused on the major impacts of the volcanic event.
+
+                AI use:
+                AI assisted with XSD syntax implementation, and the element definition was reviewed against the data dictionary.
+                -->
+                <xs:element ref="dc:description">
+                    <xs:annotation>
+                        <xs:documentation>A brief textual summary of the volcano, its notable event, and its social, environmental, or historical significance.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                The location element was initially informed by Schema.org concepts.
+                However, it was implemented as a locally defined element within the volcano namespace in order to maintain a simpler XSD structure and ensure consistent validation.
+                It is a required element and may occur multiple times.
+
+                AI use:
+                AI suggested approaches for incorporating Schema.org concepts.
+                After review, the implementation was revised to use a locally defined element in order to simplify the XSD structure and support reliable validation.
+                -->
+                <xs:element name="location" type="xs:string" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The geographic place where the volcano or volcanic event is located.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                startDate is optional because the beginning of some volcanic events may be unknown, uncertain, or not documented in available records.
+                -->
+                <xs:element name="startDate" type="volcano:dateOrTextType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>The date or time period when the notable volcanic event began.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                endDate is optional because the ending date of some volcanic events may be uncertain, unknown, or not documented in available records.
+                -->
+                <xs:element name="endDate" type="volcano:dateOrTextType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>The date or time period when the notable volcanic event ended.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                volcanoType is required and repeatable because a volcano may be associated with multiple geological classifications.
+                -->
+                <xs:element name="volcanoType" type="volcano:volcanoTypeType" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The geological classification of the volcano based on its structure, formation, and eruption characteristics.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                notableEvent is required and repeatable because this schema is centered on documenting major events associated with a volcano, and multiple significant events may be recorded for a single volcano.
+
+                AI use:
+                AI provided examples of XSD element declarations.
+                The final structure and cardinality were revised in accordance with the data dictionary.
+                -->
+                <xs:element name="notableEvent" type="xs:string" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>A major eruption or volcanic event associated with the volcano, selected because of its historical, social, environmental, or cultural importance.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                eventImpactType is required and repeatable because a single volcanic event may result in multiple types of impacts simultaneously.
+                -->
+                <xs:element name="eventImpactType" type="volcano:eventImpactTypeType" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The major category or categories of impact caused by the volcanic event.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                humanImpact is optional and repeatable because a volcanic event may have multiple social impacts affecting different communities, populations, or aspects of daily life.
+                -->
+                <xs:element name="humanImpact" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The effects of the volcanic event on people and communities, including casualties, injuries, evacuation, displacement, health effects, or settlement damage.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                populationExposure is optional and may occur only once because it represents a summary assessment of the overall level of population exposure to volcanic risk.
+
+                AI use:
+                AI provided examples of implementing controlled vocabularies as XSD simpleTypes.
+                The final type selection and cardinality were determined according to the data dictionary.
+                -->
+                <xs:element name="populationExposure" type="volcano:populationExposureType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>The level of nearby population vulnerability or exposure to volcanic risk.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                climateEffect is optional and repeatable because a volcanic event may be associated with multiple climate effects.
+                -->
+                <xs:element name="climateEffect" type="volcano:climateEffectType" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The effect of a volcanic event on regional or global climate systems, including atmospheric cooling, aerosol release, or ash-related atmospheric change.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                transportationDisruption is optional and repeatable because a single volcanic eruption may disrupt multiple transportation systems.
+
+                AI use:
+                AI provided examples of implementing controlled vocabularies in XSD.
+                The final type selection and cardinality were determined according to the data dictionary.
+                -->
+                <xs:element name="transportationDisruption" type="volcano:transportationDisruptionType" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>Disruption to transportation systems caused by volcanic activity, including aviation, roads, railways, maritime routes, or access routes.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                responseStrategy is optional and repeatable because multiple strategies may be employed during emergency response and recovery efforts.
+
+                AI use:
+                AI provided examples of implementing controlled vocabularies in XSD.
+                The final type selection and cardinality were determined according to the data dictionary.
+                -->
+                <xs:element name="responseStrategy" type="volcano:responseStrategyType" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>Emergency, monitoring, evacuation, mitigation, or recovery actions taken before, during, or after a volcanic event.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!--
+                Design intent:
+                The monitoringAgency element was initially informed by the Schema.org Organization concept.
+                However, it was implemented as a locally defined element within the volcano namespace in order to maintain a simpler XSD structure and ensure consistent validation.
+                It is also optional and repeatable because multiple agencies may be involved in monitoring or responding to a single volcano.
+
+                AI use:
+                AI suggested approaches for incorporating Schema.org concepts.
+                After review, the implementation was revised to use a locally defined element in order to simplify the XSD structure and support reliable validation.
+                -->
+                <xs:element name="monitoringAgency" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>The agency, observatory, or institution responsible for monitoring volcanic activity, issuing warnings, or managing volcanic risk.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<volcanoRecord
+    xmlns="http://example.org/volcano"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://example.org/volcano
+        volcano_metadata.xsd">
+
+<dc:title>Mount Pinatubo</dc:title>
+
+<dc:description>
+    A volcano in the Philippines known for its major 1991 eruption,
+    which caused large-scale evacuation, environmental damage,
+    and global climate effects.
+</dc:description>
+
+<location>Luzon, Philippines</location>
+
+<startDate>1991-06-15</startDate>
+
+<endDate>1991-09, approximate</endDate>
+
+<volcanoType>Stratovolcano</volcanoType>
+
+<notableEvent>1991 Mount Pinatubo eruption</notableEvent>
+
+<eventImpactType>Climate impact</eventImpactType>
+<eventImpactType>Evacuation/displacement</eventImpactType>
+<eventImpactType>Transportation disruption</eventImpactType>
+
+<humanImpact>
+    Large-scale evacuation and displacement of nearby communities; 
+    casualties occurred due to eruption-related hazards.
+</humanImpact>
+
+<populationExposure>High</populationExposure>
+
+<climateEffect>Global cooling</climateEffect>
+
+<transportationDisruption>Aviation disruption</transportationDisruption>
+
+<responseStrategy>Hazard monitoring</responseStrategy>
+<responseStrategy>Evacuation order</responseStrategy>
+<responseStrategy>Emergency shelter</responseStrategy>
+<responseStrategy>Public warning</responseStrategy>
+
+<monitoringAgency>Philippine Institute of Volcanology and Seismology (PHIVOLCS)</monitoringAgency>
+
+
+</volcanoRecord>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volcano Metadata Schema</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      background: #f7f7f7;
+      color: #222;
+    }
+    header {
+      background: #2f3e46;
+      color: white;
+      padding: 2.5rem 8%;
+    }
+    header h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2.2rem;
+    }
+    header p {
+      max-width: 900px;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+      background: white;
+    }
+    section {
+      margin-bottom: 3rem;
+    }
+    h2 {
+      border-bottom: 2px solid #cad2c5;
+      padding-bottom: 0.4rem;
+      color: #2f3e46;
+    }
+    h3 {
+      color: #354f52;
+      margin-top: 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 2rem;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.65rem;
+      vertical-align: top;
+    }
+    th {
+      background: #e9ecef;
+      text-align: left;
+    }
+    code {
+      background: #f1f3f5;
+      padding: 0.1rem 0.25rem;
+      border-radius: 4px;
+      font-family: Consolas, Monaco, monospace;
+    }
+    .file-list li {
+      margin-bottom: 0.5rem;
+    }
+    .note {
+      background: #edf6f9;
+      border-left: 4px solid #52796f;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      color: #555;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Volcano Metadata Schema</h1>
+    <p>
+      A metadata schema for describing volcanoes and notable volcanic events, with special attention to human, environmental, transportation, and climate impacts.
+    </p>
+  </header>
+
+  <main>
+    <section id="opening-narrative">
+      <h2>1. Opening Narrative</h2>
+      <p>
+        Volcanoes are documented in many scientific, governmental, educational, and historical information systems. Traditional volcano records often focus on physical characteristics such as name, location, volcano type, eruption history, and monitoring status. However, major volcanic events are also important social and environmental events. They can displace communities, disrupt transportation networks, damage infrastructure, affect public health, and influence regional or global climate systems.
+      </p>
+      <p>
+        This project develops a metadata schema for describing volcanoes and notable volcanic events from an impact-centered perspective. The schema is intended for students, researchers, educators, cultural heritage workers, and general users who need structured records about volcanoes and their effects. Instead of describing a volcano only as a geological object, this schema connects the volcano to a significant event and records the consequences of that event.
+      </p>
+      <p>
+        The schema was developed through several drafts. Earlier drafts identified the domain, selected example objects, and created a data dictionary. The final version implements the schema as an XML Schema Definition (XSD). During revision, Schema.org-inspired concepts such as location, start date, end date, and monitoring agency were implemented as locally defined elements in the <code>volcano</code> namespace to simplify validation. Dublin Core is used for general descriptive metadata, while project-specific elements are defined locally.
+      </p>
+      <p>
+        The larger design principle behind this schema is that metadata is not only a neutral description of objects. It also reflects decisions about what aspects of an object are worth recording. By emphasizing impacts, this schema makes volcanic events easier to compare across social, environmental, transportation, and climate dimensions.
+      </p>
+    </section>
+
+    <section id="metadata-standards">
+      <h2>2. Relevant Metadata Standards</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Standard or Namespace</th>
+            <th>Use in This Schema</th>
+            <th>Reason for Selection</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dublin Core (<code>dc</code>)</td>
+            <td><code>dc:title</code>, <code>dc:description</code></td>
+            <td>Dublin Core provides widely recognized elements for basic resource description. It is appropriate for general descriptive fields such as the name of the volcano or event and a summary of its significance.</td>
+          </tr>
+          <tr>
+            <td>Local Volcano Namespace (<code>volcano</code>)</td>
+            <td>Project-specific elements such as <code>location</code>, <code>volcanoType</code>, <code>eventImpactType</code>, <code>humanImpact</code>, and <code>monitoringAgency</code></td>
+            <td>The project requires specialized elements for volcanic events and their impacts. These elements are defined locally to make the XSD easier to validate and align with the project data dictionary.</td>
+          </tr>
+          <tr>
+            <td>Schema.org concepts</td>
+            <td>Used as conceptual inspiration only, not directly imported into the XSD</td>
+            <td>Elements such as location, start date, end date, and organization/agency are conceptually related to Schema.org, but direct implementation would add unnecessary complexity. Therefore, they are represented as local <code>volcano</code> elements.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="vocabulary-specification">
+      <h2>3. Vocabulary Specification</h2>
+      <h3>Element Overview</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>Label</th>
+            <th>Mandatory</th>
+            <th>Repeatable</th>
+            <th>Data Values</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>dc:title</code></td><td>Volcano/Event Name</td><td>Yes</td><td>No</td><td>String</td></tr>
+          <tr><td><code>dc:description</code></td><td>Description</td><td>Yes</td><td>No</td><td>String</td></tr>
+          <tr><td><code>volcano:location</code></td><td>Location</td><td>Yes</td><td>Yes</td><td>String</td></tr>
+          <tr><td><code>volcano:startDate</code></td><td>Event Start Date</td><td>No</td><td>No</td><td>Date, approximate date, time period, or text</td></tr>
+          <tr><td><code>volcano:endDate</code></td><td>Event End Date</td><td>No</td><td>No</td><td>Date, approximate date, time period, or text</td></tr>
+          <tr><td><code>volcano:volcanoType</code></td><td>Volcano Type</td><td>Yes</td><td>Yes</td><td>Controlled vocabulary</td></tr>
+          <tr><td><code>volcano:notableEvent</code></td><td>Notable Volcanic Event</td><td>Yes</td><td>Yes</td><td>String</td></tr>
+          <tr><td><code>volcano:eventImpactType</code></td><td>Event Impact Type</td><td>Yes</td><td>Yes</td><td>Controlled vocabulary</td></tr>
+          <tr><td><code>volcano:humanImpact</code></td><td>Human Impact</td><td>No</td><td>Yes</td><td>Descriptive text</td></tr>
+          <tr><td><code>volcano:populationExposure</code></td><td>Population Exposure</td><td>No</td><td>No</td><td>Controlled vocabulary</td></tr>
+          <tr><td><code>volcano:climateEffect</code></td><td>Climate Effect</td><td>No</td><td>Yes</td><td>Controlled vocabulary</td></tr>
+          <tr><td><code>volcano:transportationDisruption</code></td><td>Transportation Disruption</td><td>No</td><td>Yes</td><td>Controlled vocabulary</td></tr>
+          <tr><td><code>volcano:responseStrategy</code></td><td>Response Strategy</td><td>No</td><td>Yes</td><td>Controlled vocabulary</td></tr>
+          <tr><td><code>volcano:monitoringAgency</code></td><td>Monitoring Agency</td><td>No</td><td>Yes</td><td>String</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Full Data Dictionary</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>Definition</th>
+            <th>Controlled Vocabulary</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>dc:title</code></td>
+            <td>The official or commonly used name of the volcano or volcanic event being described.</td>
+            <td>None</td>
+            <td>Mount Pinatubo</td>
+          </tr>
+          <tr>
+            <td><code>dc:description</code></td>
+            <td>A brief textual summary of the volcano, its notable event, and its social, environmental, or historical significance.</td>
+            <td>None</td>
+            <td>A volcano in the Philippines known for its 1991 eruption and global climate effects.</td>
+          </tr>
+          <tr>
+            <td><code>volcano:location</code></td>
+            <td>The geographic place where the volcano or volcanic event is located.</td>
+            <td>None</td>
+            <td>Luzon, Philippines</td>
+          </tr>
+          <tr>
+            <td><code>volcano:startDate</code></td>
+            <td>The date or time period when the notable volcanic event began.</td>
+            <td>None</td>
+            <td>1991-06-15</td>
+          </tr>
+          <tr>
+            <td><code>volcano:endDate</code></td>
+            <td>The date or time period when the notable volcanic event ended.</td>
+            <td>None</td>
+            <td>1991-09, approximate</td>
+          </tr>
+          <tr>
+            <td><code>volcano:volcanoType</code></td>
+            <td>The geological classification of the volcano based on its structure, formation, and eruption characteristics.</td>
+            <td>Stratovolcano; Shield volcano; Caldera; Lava dome; Cinder cone; Volcanic island; Complex volcano</td>
+            <td>Stratovolcano</td>
+          </tr>
+          <tr>
+            <td><code>volcano:notableEvent</code></td>
+            <td>A major eruption or volcanic event associated with the volcano, selected because of its historical, social, environmental, or cultural importance.</td>
+            <td>None</td>
+            <td>1991 Mount Pinatubo eruption</td>
+          </tr>
+          <tr>
+            <td><code>volcano:eventImpactType</code></td>
+            <td>The major category or categories of impact caused by the volcanic event.</td>
+            <td>Human casualty; Evacuation/displacement; Climate impact; Transportation disruption; Economic damage; Environmental impact; Cultural heritage impact; Urban destruction; Tsunami impact</td>
+            <td>Climate impact</td>
+          </tr>
+          <tr>
+            <td><code>volcano:humanImpact</code></td>
+            <td>The effects of the volcanic event on people and communities, including casualties, injuries, evacuation, displacement, health effects, or settlement damage.</td>
+            <td>None</td>
+            <td>Large-scale evacuation and displacement of nearby communities.</td>
+          </tr>
+          <tr>
+            <td><code>volcano:populationExposure</code></td>
+            <td>The level of nearby population vulnerability or exposure to volcanic risk.</td>
+            <td>Low; Moderate; High; Very High; Unknown</td>
+            <td>High</td>
+          </tr>
+          <tr>
+            <td><code>volcano:climateEffect</code></td>
+            <td>The effect of a volcanic event on regional or global climate systems, including atmospheric cooling, aerosol release, or ash-related atmospheric change.</td>
+            <td>Not documented; Local atmospheric effect; Regional climate effect; Global cooling; Long-term climate influence; Unknown</td>
+            <td>Global cooling</td>
+          </tr>
+          <tr>
+            <td><code>volcano:transportationDisruption</code></td>
+            <td>Disruption to transportation systems caused by volcanic activity, including aviation, roads, railways, maritime routes, or access routes.</td>
+            <td>Not documented; Aviation disruption; Road closure; Railway disruption; Maritime disruption; Multi-system disruption; Access restriction</td>
+            <td>Aviation disruption</td>
+          </tr>
+          <tr>
+            <td><code>volcano:responseStrategy</code></td>
+            <td>Emergency, monitoring, evacuation, mitigation, or recovery actions taken before, during, or after a volcanic event.</td>
+            <td>Hazard monitoring; Evacuation order; Exclusion zone; Emergency shelter; Airspace regulation; Road closure; Long-term recovery; Public warning</td>
+            <td>Evacuation order</td>
+          </tr>
+          <tr>
+            <td><code>volcano:monitoringAgency</code></td>
+            <td>The agency, observatory, or institution responsible for monitoring volcanic activity, issuing warnings, or managing volcanic risk.</td>
+            <td>None</td>
+            <td>Philippine Institute of Volcanology and Seismology (PHIVOLCS)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Implementation note:</strong> In the XSD, these elements are represented without sub-elements. Repeated information, such as multiple impact types or response strategies, is represented by repeating the element.
+      </div>
+    </section>
+
+    <section id="xsd-file">
+      <h2>4. XSD File</h2>
+      <p>
+        The XML Schema Definition file defines the structure, element order, cardinality, controlled vocabularies, documentation annotations, and design-intent comments for this volcano metadata schema.
+      </p>
+      <p>
+        <a href="volcano_metadata.xsd">View the hosted XSD file</a>
+      </p>
+      <p>
+        The sample XML records are designed to reference and validate against this hosted XSD file.
+      </p>
+    </section>
+
+    <section id="sample-xml-records">
+      <h2>5. Sample XML Records</h2>
+      <p>
+        The following sample XML records demonstrate how the schema can be used to describe different volcanoes and volcanic events. Each record includes required descriptive fields and selected impact-centered fields.
+      </p>
+      <ul class="file-list">
+        <li><a href="pinatubo.xml">Mount Pinatubo XML Record</a></li>
+        <li><a href="eyjafjallajokull.xml">Eyjafjallajökull XML Record</a></li>
+        <li><a href="kilauea.xml">Kīlauea XML Record</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Final Project Website: Volcano Metadata Schema</p>
+  </footer>
+</body>
+</html>

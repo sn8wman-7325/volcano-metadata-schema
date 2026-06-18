@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<volcanoRecord
+    xmlns="http://example.org/volcano"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://example.org/volcano
+        volcano_metadata.xsd">
+
+    <dc:title>Eyjafjallajökull</dc:title>
+
+    <dc:description>
+        An Icelandic volcano known for its major 2010 eruption,
+        which caused widespread disruption to global air travel
+        due to volcanic ash clouds.
+    </dc:description>
+
+    <location>Southern Iceland</location>
+
+    <startDate>2010-03-20</startDate>
+
+    <endDate>2010-06, approximate</endDate>
+
+    <volcanoType>Stratovolcano</volcanoType>
+
+    <notableEvent>2010 Eyjafjallajökull eruption</notableEvent>
+
+    <eventImpactType>Transportation disruption</eventImpactType>
+
+    <humanImpact>
+        Limited direct casualties, but major disruption to
+        international travel and economic activity.
+    </humanImpact>
+
+    <populationExposure>Moderate</populationExposure>
+
+    <climateEffect>Local atmospheric effect</climateEffect>
+
+    <transportationDisruption>Aviation disruption</transportationDisruption>
+
+    <responseStrategy>Hazard monitoring</responseStrategy>
+    <responseStrategy>Airspace regulation</responseStrategy>
+    <responseStrategy>Public warning</responseStrategy>
+
+    <monitoringAgency>Icelandic Meteorological Office</monitoringAgency>
+
+</volcanoRecord>
